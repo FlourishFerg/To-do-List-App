@@ -1,6 +1,6 @@
 package com.example.todolistapp;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Task {
     private int id;
@@ -24,11 +24,12 @@ public class Task {
         return name;
     }
 
-    public java.sql.Date getDueDate() {
-        return (java.sql.Date) dueDate;
+    public Date getDueDate() {
+        return dueDate;
     }
 
     public boolean isCompleted() {
         return completed;
     }
+
 }

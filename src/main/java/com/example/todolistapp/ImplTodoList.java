@@ -1,65 +1,92 @@
 package com.example.todolistapp;
-import java.sql.*;
 
-public class ImplTodoList implements TodoList{
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static javafx.geometry.Pos.*;
+
+public class ImplTodoList implements TodoList {
     private Connection connection;
-    public ImplTodoList(Connection connection){
+
+    public ImplTodoList(Connection connection) {
         this.connection = connection;
     }
+
     @Override
     public void createTask(Task task) throws SQLException {
-      String sql = "Insert into tasks (name,duedate,completed) values (?,?,?)";
-      try (PreparedStatement statement = connection.prepareStatement(sql)) {
-          statement.setString(1, task.getName());
-          statement.setDate(2, new java.sql.Date(task.getDueDate().getTime()));
-          statement.setBoolean(3, task.isCompleted());
-          statement.executeUpdate();
-      }catch (SQLException e){
-          e.printStackTrace();
-      }
+        String sql = "INSERT INTO tasks (name, duedate, completed) VALUES (?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, task.getName());
+            statement.setDate(2, new java.sql.Date(task.getDueDate().getTime()));
+            statement.setBoolean(3, task.isCompleted());
+            statement.executeUpdate();
+        }
     }
+
     @Override
-    public Task readTask(int id) {
-        String sql = "Select * from tasks where id = ?";
+    public Task readTask(int id) throws SQLException {
+        String sql = "SELECT * FROM tasks WHERE id = ?";
         Task task = null;
-        try(PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
-                task=new Task(
+            if (resultSet.next()) {
+                task = new Task(
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
                         resultSet.getDate("duedate"),
                         resultSet.getBoolean("completed")
                 );
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
         return task;
     }
 
-
     @Override
     public void updateTask(Task task) throws SQLException {
-    String sql = "UPDATE tasks SET name = ?, description = ?, due_date =?, completed = ? WHERE id = ?";
-    try(PreparedStatement statement =connection.prepareStatement(sql)){
-        statement.setInt(1, task.getId());
-        statement.setString(2,task.getName());
-        statement.setDate(3,task.getDueDate());
-        statement.setBoolean(4,task.isCompleted());
-        statement.executeUpdate();
-    }catch (SQLException e){
-        e.printStackTrace();
-    }
-    }
-    @Override
-    public void deleteTask(int id) {
-        String sql = "DELETE FROM tasks WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
-            statement.setInt(1,id);
+        String sql = "UPDATE tasks SET name = ?, duedate = ?, completed = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, task.getName());
+            statement.setDate(2, new java.sql.Date(task.getDueDate().getTime()));
+            statement.setBoolean(3, task.isCompleted());
+            statement.setInt(4, task.getId());
             statement.executeUpdate();
-        } catch (SQLException e) {
         }
     }
+
+    @Override
+    public void deleteTask(int id) throws SQLException {
+        String sql = "DELETE FROM tasks WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        }
+    }
+
+    public List<Task> getAllTasks() throws SQLException {
+        List<Task> tasks = new ArrayList<>();
+        String sql = "SELECT * FROM tasks";
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                Task task = new Task(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDate("duedate"),
+                        resultSet.getBoolean("completed")
+                );
+                tasks.add(task);
+            }
+        }
+        return tasks;
+    }
+
+
+
 }
