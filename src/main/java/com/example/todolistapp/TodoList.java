@@ -4,9 +4,9 @@ import java.sql.SQLException;
 
 public interface TodoList {
     void createTask(Task task) throws SQLException;
-    Task readTask(int id);
+    Task readTask(int id) throws SQLException;
 
     void updateTask(Task task) throws SQLException;
 
-    void deleteTask(int id);
+    void deleteTask(int id) throws SQLException;
 }
