@@ -43,7 +43,7 @@ import java.sql.Date;
         }
 
         private void addTask() {
-            String taskName = taskInput.getText();gege
+            String taskName = taskInput.getText();
             if (!taskName.isEmpty()) {
                 Task newTask = new Task(0, taskName, new java.sql.Date(System.currentTimeMillis()), false);
                 try {
