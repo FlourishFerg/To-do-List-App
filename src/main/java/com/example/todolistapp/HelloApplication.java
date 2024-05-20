@@ -16,7 +16,6 @@ public class HelloApplication extends Application {
         stage.setTitle("To-do!");
         stage.initStyle(StageStyle.DECORATED);
 
-
         // Center the stage on the screen
         stage.centerOnScreen();
 
