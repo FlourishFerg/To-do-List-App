@@ -60,7 +60,14 @@ import java.sql.Date;
             TextField taskField = new TextField(task.getName());
             taskField.setEditable(false);
 
-            
+            Button editButton = new Button("Edit");
+            Button deleteButton = new Button("Delete");
+
+            HBox taskBox = new HBox(10, taskField, editButton, deleteButton);
+            taskList.getChildren().add(taskBox);
+
+            editButton.setOnAction(e -> editTask(task, taskField));
+            deleteButton.setOnAction(e -> deleteTask(task));
         }
 
         private void editTask(Task task, TextField taskField) {
