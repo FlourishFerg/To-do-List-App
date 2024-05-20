@@ -14,7 +14,7 @@ import static javafx.geometry.Pos.*;
 public class ImplTodoList implements TodoList {
     private Connection connection;
 
-    // random
+    
     public ImplTodoList(Connection connection) {
         this.connection = connection;
     }
