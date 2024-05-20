@@ -25,6 +25,7 @@ public class ImplTodoList implements TodoList {
             statement.setString(1, task.getName());
             statement.setDate(2, new java.sql.Date(task.getDueDate().getTime()));
             statement.setBoolean(3, task.isCompleted());
+
             statement.executeUpdate();
         }
     }
