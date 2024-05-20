@@ -32,14 +32,7 @@ import java.sql.Date;
         }
 
         private void loadTasks() {
-            taskList.getChildren().clear();
-            try {
-                for (Task task : todoList.getAllTasks()) { // Ensure ImplTodoList has getAllTasks() method
-                    addTaskToUI(task);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            
         }
 
         private void addTask() {
