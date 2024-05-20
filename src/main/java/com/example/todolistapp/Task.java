@@ -32,4 +32,8 @@ public class Task {
         return completed;
     }
 
+    public static void main(String[] args) {
+
+    }
+
 }
